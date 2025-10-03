@@ -1,15 +1,11 @@
 <script setup lang="ts">
-// const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 import Button from './ui/button/Button.vue'
 import Label from './ui/label/Label.vue'
 import Input from './ui/input/Input.vue'
+import type { Coords, State } from '@/types'
 
-const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
-const geoapifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
-
-const hasSubmitted = defineModel<boolean>()
-
-console.log(hasSubmitted.value)
+const state = defineModel<State>('state')
+const coords = defineModel<Coords | null>('coords')
 
 const options = {
   enableHighAccuracy: true,
@@ -19,29 +15,26 @@ const options = {
 
 function success(pos: GeolocationPosition) {
   const crd = pos.coords
-
-  console.log('Your current position is:')
-  console.log(`Latitude : ${crd.latitude}`)
-  console.log(`Longitude: ${crd.longitude}`)
-  console.log(`More or less ${crd.accuracy} meters.`)
+  coords.value = { lat: crd.latitude, lon: crd.longitude }
 }
 
 function error(err: GeolocationPositionError) {
   console.warn(`ERROR(${err.code}): ${err.message}`)
+  state.value = 'error'
 }
 
 function getDeviceLocation() {
+  state.value = 'loading'
   navigator.geolocation.getCurrentPosition(success, error, options)
-  hasSubmitted.value = true
 }
-
-console.log(openweatherKey)
-console.log(geoapifyKey)
 </script>
 
 <template>
   <div>
-    <Button size="lg" class="block mx-auto" @click="getDeviceLocation">get device location</Button>
+    <Button size="lg" class="block mx-auto" @click="getDeviceLocation">
+      <span v-if="state === 'loading'"> loading...</span>
+      <span v-else>get device location</span>
+    </Button>
 
     <p
       class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
