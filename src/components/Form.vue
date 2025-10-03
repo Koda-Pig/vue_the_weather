@@ -3,7 +3,12 @@
 </script>
 
 <template>
-  <div>
-    <h1>put something here</h1>
-  </div>
+  <form></form>
 </template>
+
+<style scoped>
+form {
+  outline: 10px solid rebeccapurple;
+  padding: 16px;
+}
+</style>
