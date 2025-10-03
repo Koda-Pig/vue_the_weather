@@ -1,0 +1,115 @@
+@view-transition {
+  navigation: auto;
+}
+
+:root {
+  --background: #16161d;
+  --foreground: #ededed;
+  --link: var(--blue);
+  --accent: #94a2e1;
+  --blue: rgb(var(--rgb-blue));
+  --rgb-blue: 121, 178, 210;
+  --transition-short: 0.2s;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: #0000;
+}
+
+html {
+  color-scheme: dark;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--background);
+  font-family: sans-serif;
+}
+
+main {
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 32px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: sans-serif;
+}
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  transition: var(--transition-short) color;
+}
+a::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  width: 0;
+  height: 0.1em;
+  background-color: currentColor;
+  transition: var(--transition-short) width;
+}
+a:hover,
+a:focus-visible {
+  color: inherit;
+}
+a::after {
+  width: 100%;
+}
+button {
+  background: transparent;
+  border: solid var(--accent);
+  color: var(--accent);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 2px;
+  transition-duration: var(--transition-short);
+  transition-property: background-color, color, border-color;
+}
+button:hover:not(:disabled),
+button:focus-visible:not(:disabled) {
+  background: var(--accent);
+  color: var(--background);
+}
+button:not(:disabled) {
+  opacity: 0.5;
+  cursor: pointer;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
