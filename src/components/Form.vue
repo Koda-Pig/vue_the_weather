@@ -11,9 +11,7 @@ import CardFooter from './ui/card/CardFooter.vue'
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const geoapifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 
-const formData = ref({
-  city: '',
-})
+const hasSubmitted = ref(false)
 
 const options = {
   enableHighAccuracy: true,
@@ -35,6 +33,7 @@ function error(err: GeolocationPositionError) {
 }
 
 function getDeviceLocation() {
+  hasSubmitted.value = true
   navigator.geolocation.getCurrentPosition(success, error, options)
 }
 
@@ -43,31 +42,25 @@ console.log(geoapifyKey)
 </script>
 
 <template>
-  <Card class="w-[60ch] mx-auto text-center">
-    <h1 class="text-xl">Vue Weather</h1>
-    <CardContent class="">
-      <!-- // this should have auto predict/ dropdown thing -->
-      <Button size="lg" class="block mx-auto" @click="getDeviceLocation"
-        >get device location</Button
-      >
+  <Button size="lg" class="block mx-auto" @click="getDeviceLocation">get device location</Button>
 
-      <p
-        class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
-      >
-        or
-      </p>
+  <p
+    class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
+  >
+    or
+  </p>
 
-      <div>
-        <Label for="location-name" class="block my-4">search location</Label>
-        <Input
-          type="text"
-          name="location-name"
-          id="location-name"
-          placeholder="location name"
-          class="text-center"
-        />
+  <div>
+    <Label for="location-name" class="block my-4">search location</Label>
+    <Input
+      type="text"
+      name="location-name"
+      id="location-name"
+      placeholder="location name"
+      class="text-center"
+    />
 
-        <!-- <Select>
+    <!-- <Select>
               <SelectTrigger id="framework">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -78,12 +71,8 @@ console.log(geoapifyKey)
                 <SelectItem value="astro"> Astro </SelectItem>
               </SelectContent>
             </Select> -->
-      </div>
-    </CardContent>
-    <CardFooter>
-      <Button class="block mx-auto" size="lg">search location Name</Button>
-    </CardFooter>
-  </Card>
+  </div>
+  <Button class="block mx-auto mt-4" size="lg">search location Name</Button>
 </template>
 
 <style scoped>
