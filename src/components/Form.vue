@@ -51,7 +51,11 @@ console.log(geoapifyKey)
         >get device location</Button
       >
 
-      <p class="my-4 after:content-[''] after:h-0.5">or</p>
+      <p
+        class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
+      >
+        or
+      </p>
 
       <div>
         <Label for="location-name" class="block my-4">search location</Label>
@@ -81,3 +85,17 @@ console.log(geoapifyKey)
     </CardFooter>
   </Card>
 </template>
+
+<style scoped>
+/* this creates a line behind the 'or' text and the calcs with the 'ch' (1 character) unit account for the width of the text */
+.before-and:after {
+  background: linear-gradient(
+    to right,
+    transparent,
+    gray calc(50% - 1.5ch),
+    transparent 0 calc(50% + 1.5ch),
+    gray 0,
+    transparent
+  );
+}
+</style>
