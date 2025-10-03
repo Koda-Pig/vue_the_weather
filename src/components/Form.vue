@@ -1,8 +1,12 @@
 <script setup lang="ts">
 // const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 import { ref } from 'vue'
+import Button from './ui/button/Button.vue'
+import Card from './ui/card/Card.vue'
+
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const geoapifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
+
 const formData = ref({
   city: '',
 })
@@ -35,29 +39,15 @@ console.log(geoapifyKey)
 </script>
 
 <template>
-  <form
-    @submit.prevent="handleSubmit"
-    class="border border-white rounded-xs p-4 max-w-[60ch] mx-auto bg-[rgba(255,255,255,0.05)]"
-  >
-    <input type="text" name="city" id="city" />
-    <!-- // this should have auto predict/ dropdown thing -->
-    <label for="city">location name</label>
-    <button class="mx-auto block text-2xl">get location</button>
-  </form>
+  <Card>
+    <form
+      @submit.prevent="handleSubmit"
+      class="border border-white rounded-xs p-4 max-w-[60ch] mx-auto bg-[rgba(255,255,255,0.05)]"
+    >
+      <input type="text" name="city" id="city" />
+      <!-- // this should have auto predict/ dropdown thing -->
+      <label for="city">location name</label>
+      <Button class="mx-auto block">get location</Button>
+    </form>
+  </Card>
 </template>
-
-<style scoped>
-/* form {
-  border: solid white;
-  border-radius: 2px;
-  padding: 16px;
-  max-width: 60ch;
-  margin-inline: auto;
-  background: rgba(255 255 255/ 0.05);
-} */
-/* button {
-  margin-inline: auto;
-  display: block;
-  font-size: 1.5rem;
-} */
-</style>

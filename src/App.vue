@@ -5,13 +5,7 @@ import Form from './components/Form.vue'
 <template>
   <h1 class="sr-only">Vue the Weather</h1>
 
-  <main>
+  <main class="p-4 md:p-8">
     <Form />
   </main>
 </template>
-
-<style scoped>
-/* * {
-  outline: 1px solid limegreen;
-} */
-</style>
