@@ -1,17 +1,15 @@
 <script setup lang="ts">
 // const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
-import { ref } from 'vue'
 import Button from './ui/button/Button.vue'
 import Label from './ui/label/Label.vue'
 import Input from './ui/input/Input.vue'
-import Card from './ui/card/Card.vue'
-import CardContent from './ui/card/CardContent.vue'
-import CardFooter from './ui/card/CardFooter.vue'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const geoapifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 
-const hasSubmitted = ref(false)
+const hasSubmitted = defineModel<boolean>()
+
+console.log(hasSubmitted.value)
 
 const options = {
   enableHighAccuracy: true,
@@ -33,8 +31,8 @@ function error(err: GeolocationPositionError) {
 }
 
 function getDeviceLocation() {
-  hasSubmitted.value = true
   navigator.geolocation.getCurrentPosition(success, error, options)
+  hasSubmitted.value = true
 }
 
 console.log(openweatherKey)
@@ -42,25 +40,26 @@ console.log(geoapifyKey)
 </script>
 
 <template>
-  <Button size="lg" class="block mx-auto" @click="getDeviceLocation">get device location</Button>
-
-  <p
-    class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
-  >
-    or
-  </p>
-
   <div>
-    <Label for="location-name" class="block my-4">search location</Label>
-    <Input
-      type="text"
-      name="location-name"
-      id="location-name"
-      placeholder="location name"
-      class="text-center"
-    />
+    <Button size="lg" class="block mx-auto" @click="getDeviceLocation">get device location</Button>
 
-    <!-- <Select>
+    <p
+      class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
+    >
+      or
+    </p>
+
+    <div>
+      <Label for="location-name" class="block my-4">search location</Label>
+      <Input
+        type="text"
+        name="location-name"
+        id="location-name"
+        placeholder="location name"
+        class="text-center"
+      />
+
+      <!-- <Select>
               <SelectTrigger id="framework">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -71,8 +70,9 @@ console.log(geoapifyKey)
                 <SelectItem value="astro"> Astro </SelectItem>
               </SelectContent>
             </Select> -->
+    </div>
+    <Button class="block mx-auto mt-4" size="lg">search location Name</Button>
   </div>
-  <Button class="block mx-auto mt-4" size="lg">search location Name</Button>
 </template>
 
 <style scoped>
