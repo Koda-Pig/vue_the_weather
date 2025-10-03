@@ -3,12 +3,16 @@
 </script>
 
 <template>
-  <form></form>
+  <form>
+    <button>vue weather</button>
+  </form>
 </template>
 
 <style scoped>
 form {
   outline: 10px solid rebeccapurple;
   padding: 16px;
+  max-width: 60ch;
+  margin-inline: auto;
 }
 </style>
