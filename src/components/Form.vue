@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import Button from './ui/button/Button.vue'
 import Label from './ui/label/Label.vue'
 import Input from './ui/input/Input.vue'
-import type { Coords, State } from '@/types'
+import type { Coords, State, LocationPrediction } from '@/types'
+import { debounce } from '@/funks'
 
+const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
+const locationText = ref('')
 const state = defineModel<State>('state')
 const coords = defineModel<Coords | null>('coords')
+const locationPrediction = ref<LocationPrediction | null>(null)
 
 const options = {
   enableHighAccuracy: true,
@@ -27,11 +32,48 @@ function getDeviceLocation() {
   state.value = 'loading'
   navigator.geolocation.getCurrentPosition(success, error, options)
 }
+
+async function getLocationPrediction(input: string) {
+  if (!geoApifyKey) {
+    state.value = 'error'
+    throw new Error('GeoApify key is not set')
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.geoapify.com/v1/geocode/autocomplete?text=${locationText.value}&apiKey=${geoApifyKey}`,
+      { method: 'GET' },
+    )
+    const data = await response.json()
+    locationPrediction.value = data
+  } catch (error: unknown) {
+    state.value = 'error'
+    throw new Error(
+      typeof error === 'string'
+        ? error
+        : `An unknown error occurred: ${JSON.stringify(error)}`,
+    )
+  }
+}
+
+const debouncedGetLocationPrediction = debounce((val: string) => {
+  getLocationPrediction(val)
+}, 1000)
+
+watch(locationText, (newVal) => {
+  const val = newVal.trim()
+  if (val) debouncedGetLocationPrediction(val)
+})
 </script>
 
 <template>
-  <div>
-    <Button size="lg" class="block mx-auto" @click="getDeviceLocation">
+  <form>
+    <Button
+      type="button"
+      size="lg"
+      class="block mx-auto"
+      @click="getDeviceLocation"
+    >
       <span v-if="state === 'loading'"> loading...</span>
       <span v-else>get device location</span>
     </Button>
@@ -50,22 +92,18 @@ function getDeviceLocation() {
         id="location-name"
         placeholder="location name"
         class="text-center"
+        v-model="locationText"
       />
-
-      <!-- <Select>
-              <SelectTrigger id="framework">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                <SelectItem value="nuxt"> Nuxt </SelectItem>
-                <SelectItem value="next"> Next.js </SelectItem>
-                <SelectItem value="sveltekit"> SvelteKit </SelectItem>
-                <SelectItem value="astro"> Astro </SelectItem>
-              </SelectContent>
-            </Select> -->
+      <ul>
+        <li v-for="guess in locationPrediction?.features">
+          {{ guess.properties.country }}
+        </li>
+      </ul>
     </div>
-    <Button class="block mx-auto mt-4" size="lg">search location Name</Button>
-  </div>
+    <Button type="button" class="block mx-auto mt-4" size="lg"
+      >search location Name</Button
+    >
+  </form>
 </template>
 
 <style scoped>
