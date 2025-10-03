@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 import { ref } from 'vue'
-const apiKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
+const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
+const geoapifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const formData = ref({
   city: '',
 })
@@ -29,7 +30,8 @@ function handleSubmit() {
   navigator.geolocation.getCurrentPosition(success, error, options)
 }
 
-console.log(apiKey)
+console.log(openweatherKey)
+console.log(geoapifyKey)
 </script>
 
 <template>
