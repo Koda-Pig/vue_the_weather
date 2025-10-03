@@ -35,26 +35,29 @@ console.log(geoapifyKey)
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form
+    @submit.prevent="handleSubmit"
+    class="border border-white rounded-xs p-4 max-w-[60ch] mx-auto bg-[rgba(255,255,255,0.05)]"
+  >
     <input type="text" name="city" id="city" />
     <!-- // this should have auto predict/ dropdown thing -->
     <label for="city">location name</label>
-    <button>get location</button>
+    <button class="mx-auto block text-2xl">get location</button>
   </form>
 </template>
 
 <style scoped>
-form {
+/* form {
   border: solid white;
   border-radius: 2px;
   padding: 16px;
   max-width: 60ch;
   margin-inline: auto;
   background: rgba(255 255 255/ 0.05);
-}
-button {
+} */
+/* button {
   margin-inline: auto;
   display: block;
   font-size: 1.5rem;
-}
+} */
 </style>
