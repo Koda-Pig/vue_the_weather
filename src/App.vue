@@ -4,6 +4,7 @@ import Form from './components/Form.vue'
 import WeatherDisplay from './components/WeatherDisplay.vue'
 import Card from './components/ui/card/Card.vue'
 import CardContent from './components/ui/card/CardContent.vue'
+import Button from './components/ui/button/Button.vue'
 import type { Coords, WeatherData, State } from '@/types'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
@@ -42,10 +43,16 @@ async function getCurrentWeather({ lat, lon }: Coords) {
     )
   }
 }
+
+function reset() {
+  state.value = 'unsubmitted'
+  coords.value = null
+}
 </script>
 
 <template>
   <main class="p-4 md:p-8">
+    <Button class="absolute top-4 right-4" @click="reset"> reset </Button>
     <Card class="w-[60ch] mx-auto text-center relative">
       <h1 class="text-xl">Vue Weather</h1>
       <CardContent class="">
