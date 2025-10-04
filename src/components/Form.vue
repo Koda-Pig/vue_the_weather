@@ -5,6 +5,7 @@ import Label from './ui/label/Label.vue'
 import Input from './ui/input/Input.vue'
 import type { Coords, State, LocationPrediction } from '@/types'
 import { debounce } from '@/funks'
+import { cn } from '@/lib/utils'
 
 const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const locationText = ref('')
@@ -33,7 +34,11 @@ function getDeviceLocation() {
   navigator.geolocation.getCurrentPosition(success, error, options)
 }
 
-async function getLocationPrediction(input: string) {
+function handlePredictionClick(predictionCoords: Coords) {
+  coords.value = { lat: predictionCoords.lat, lon: predictionCoords.lon }
+}
+
+async function getLocationPrediction() {
   if (!geoApifyKey) {
     state.value = 'error'
     throw new Error('GeoApify key is not set')
@@ -56,13 +61,13 @@ async function getLocationPrediction(input: string) {
   }
 }
 
-const debouncedGetLocationPrediction = debounce((val: string) => {
-  getLocationPrediction(val)
+const debouncedGetLocationPrediction = debounce(() => {
+  getLocationPrediction()
 }, 1000)
 
 watch(locationText, (newVal) => {
   const val = newVal.trim()
-  if (val) debouncedGetLocationPrediction(val)
+  if (val) debouncedGetLocationPrediction()
 })
 </script>
 
@@ -84,8 +89,8 @@ watch(locationText, (newVal) => {
       or
     </p>
 
-    <div>
-      <Label for="location-name" class="block my-4">search location</Label>
+    <Label for="location-name" class="block my-4">search location</Label>
+    <div class="relative">
       <Input
         type="text"
         name="location-name"
@@ -93,16 +98,39 @@ watch(locationText, (newVal) => {
         placeholder="location name"
         class="text-center"
         v-model="locationText"
+        autocomplete="off"
       />
-      <ul>
+      <ul
+        :class="
+          cn(
+            'absolute top-10 bg-gray-200 border border-black w-full max-w-[20ch] right-1/2 translate-x-1/2 transition-opacity',
+            locationPrediction?.features.length ? 'opacity-100' : 'opacity-0',
+          )
+        "
+      >
         <li v-for="guess in locationPrediction?.features">
-          {{ guess.properties.country }}
+          <button
+            class="block border-none bg-transparent hover:bg-gray-600"
+            type="button"
+            @click="
+              () =>
+                handlePredictionClick({
+                  lon: guess.properties.lon,
+                  lat: guess.properties.lat,
+                })
+            "
+          >
+            <!-- {{ guess.properties.country }}
+            {{ guess.properties.state }} -->
+            <span v-for="prop in guess.properties">
+              <span v-if="typeof prop === 'string' || typeof prop === 'number'">
+                {{ prop }},
+              </span>
+            </span>
+          </button>
         </li>
       </ul>
     </div>
-    <Button type="button" class="block mx-auto mt-4" size="lg"
-      >search location Name</Button
-    >
   </form>
 </template>
 
