@@ -115,7 +115,6 @@ watch(locationText, (newVal) => {
           <div class="relative w-full max-w-sm items-center">
             <ComboboxInput
               class="pl-9"
-              :display-value="(val) => val?.label ?? ''"
               placeholder="location..."
               v-model="locationText"
             />
@@ -128,19 +127,18 @@ watch(locationText, (newVal) => {
         </ComboboxAnchor>
 
         <ComboboxList>
-          <ComboboxEmpty> No. </ComboboxEmpty>
+          <ComboboxEmpty>No.</ComboboxEmpty>
 
           <ComboboxGroup>
             <ComboboxItem
               v-for="guess in locationPrediction?.features"
               :key="`${guess.properties.lat}-${guess.properties.lon}`"
-              :value="{ lat: guess.properties.lat, lon: guess.properties.lon }"
+              :value="guess.properties.formatted"
               @click="
-                () =>
-                  handlePredictionClick({
-                    lon: guess.properties.lon,
-                    lat: guess.properties.lat,
-                  })
+                handlePredictionClick({
+                  lon: guess.properties.lon,
+                  lat: guess.properties.lat,
+                })
               "
             >
               {{ guess.properties.formatted }}
