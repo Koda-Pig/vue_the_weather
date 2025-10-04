@@ -39,7 +39,9 @@ async function getCurrentWeather({ lat, lon }: Coords) {
   } catch (error: unknown) {
     state.value = 'error'
     throw new Error(
-      typeof error === 'string' ? error : `An unknown error occurred: ${JSON.stringify(error)}`,
+      typeof error === 'string'
+        ? error
+        : `An unknown error occurred: ${JSON.stringify(error)}`,
     )
   }
 }
@@ -61,8 +63,13 @@ function reset() {
           v-model:state="state"
           v-model:coords="coords"
         />
-        <WeatherDisplay v-else-if="state === 'success'" v-model:weatherData="weatherData" />
-        <p v-else-if="state === 'error'" class="text-red-500">An error occurred</p>
+        <WeatherDisplay
+          v-else-if="state === 'success'"
+          v-model:weatherData="weatherData"
+        />
+        <p v-else-if="state === 'error'" class="text-red-500">
+          An error occurred
+        </p>
       </CardContent>
     </Card>
   </main>

@@ -6,6 +6,25 @@ import Input from './ui/input/Input.vue'
 import type { Coords, State, LocationPrediction } from '@/types'
 import { debounce } from '@/funks'
 import { cn } from '@/lib/utils'
+import { Check, Search } from 'lucide-vue-next'
+import {
+  Combobox,
+  ComboboxAnchor,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemIndicator,
+  ComboboxList,
+} from '@/components/ui/combobox'
+
+const frameworks = [
+  { value: 'next.js', label: 'Next.js' },
+  { value: 'sveltekit', label: 'SvelteKit' },
+  { value: 'nuxt', label: 'Nuxt' },
+  { value: 'remix', label: 'Remix' },
+  { value: 'astro', label: 'Astro' },
+]
 
 const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const locationText = ref('')
@@ -91,16 +110,49 @@ watch(locationText, (newVal) => {
 
     <Label for="location-name" class="block my-4">search location</Label>
     <div class="relative">
-      <Input
-        type="text"
-        name="location-name"
-        id="location-name"
-        placeholder="location name"
-        class="text-center"
-        v-model="locationText"
-        autocomplete="off"
-      />
-      <ul
+      <Combobox v-model="locationText">
+        <ComboboxAnchor>
+          <div class="relative w-full max-w-sm items-center">
+            <ComboboxInput
+              class="pl-9"
+              :display-value="(val) => val?.label ?? ''"
+              placeholder="location..."
+              v-model="locationText"
+            />
+            <span
+              class="absolute start-0 inset-y-0 flex items-center justify-center px-3"
+            >
+              <Search class="size-4 text-muted-foreground" />
+            </span>
+          </div>
+        </ComboboxAnchor>
+
+        <ComboboxList>
+          <ComboboxEmpty> No. </ComboboxEmpty>
+
+          <ComboboxGroup>
+            <ComboboxItem
+              v-for="guess in locationPrediction?.features"
+              :key="`${guess.properties.lat}-${guess.properties.lon}`"
+              :value="{ lat: guess.properties.lat, lon: guess.properties.lon }"
+              @click="
+                () =>
+                  handlePredictionClick({
+                    lon: guess.properties.lon,
+                    lat: guess.properties.lat,
+                  })
+              "
+            >
+              {{ guess.properties.formatted }}
+
+              <ComboboxItemIndicator>
+                <Check :class="cn('ml-auto h-4 w-4')" />
+              </ComboboxItemIndicator>
+            </ComboboxItem>
+          </ComboboxGroup>
+        </ComboboxList>
+      </Combobox>
+      <!-- <ul
         :class="
           cn(
             'absolute top-10 bg-gray-200 border border-black w-full max-w-[20ch] right-1/2 translate-x-1/2 transition-opacity',
@@ -120,16 +172,10 @@ watch(locationText, (newVal) => {
                 })
             "
           >
-            <!-- {{ guess.properties.country }}
-            {{ guess.properties.state }} -->
-            <span v-for="prop in guess.properties">
-              <span v-if="typeof prop === 'string' || typeof prop === 'number'">
-                {{ prop }},
-              </span>
-            </span>
+            {{ guess.properties.formatted }}
           </button>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </form>
 </template>
