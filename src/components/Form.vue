@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue'
 import Button from './ui/button/Button.vue'
 import Label from './ui/label/Label.vue'
-import Input from './ui/input/Input.vue'
 import type { Coords, State, LocationPrediction } from '@/types'
 import { debounce } from '@/funks'
 import { cn } from '@/lib/utils'
@@ -150,30 +149,6 @@ watch(locationText, (newVal) => {
           </ComboboxGroup>
         </ComboboxList>
       </Combobox>
-      <!-- <ul
-        :class="
-          cn(
-            'absolute top-10 bg-gray-200 border border-black w-full max-w-[20ch] right-1/2 translate-x-1/2 transition-opacity',
-            locationPrediction?.features.length ? 'opacity-100' : 'opacity-0',
-          )
-        "
-      >
-        <li v-for="guess in locationPrediction?.features">
-          <button
-            class="block border-none bg-transparent hover:bg-gray-600"
-            type="button"
-            @click="
-              () =>
-                handlePredictionClick({
-                  lon: guess.properties.lon,
-                  lat: guess.properties.lat,
-                })
-            "
-          >
-            {{ guess.properties.formatted }}
-          </button>
-        </li>
-      </ul> -->
     </div>
   </form>
 </template>
