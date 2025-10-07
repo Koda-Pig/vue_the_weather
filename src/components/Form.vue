@@ -5,7 +5,7 @@ import Label from './ui/label/Label.vue'
 import type { Coords, State, LocationPrediction } from '@/types'
 import { debounce } from '@/funks'
 import { cn } from '@/lib/utils'
-import { Check, Search } from 'lucide-vue-next'
+import { Check } from 'lucide-vue-next'
 import {
   Combobox,
   ComboboxAnchor,
@@ -16,14 +16,6 @@ import {
   ComboboxItemIndicator,
   ComboboxList,
 } from '@/components/ui/combobox'
-
-const frameworks = [
-  { value: 'next.js', label: 'Next.js' },
-  { value: 'sveltekit', label: 'SvelteKit' },
-  { value: 'nuxt', label: 'Nuxt' },
-  { value: 'remix', label: 'Remix' },
-  { value: 'astro', label: 'Astro' },
-]
 
 const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const locationText = ref('')
@@ -36,6 +28,17 @@ const options = {
   timeout: 5000,
   maximumAge: 0,
 }
+
+// //  for there to be no results found there also needs to be a decent search term. It should probably have a min character limit too.
+// let noResultsFound = false
+
+// watch(locationPrediction, function () {
+//   // showEmptyPredictions =
+//   //   (locationPrediction.value?.features &&
+//   //     locationPrediction.value.features.length > 0) ??
+//   //   false
+//   console.log(locationPrediction.value)
+// })
 
 function success(pos: GeolocationPosition) {
   const crd = pos.coords
@@ -110,23 +113,17 @@ watch(locationText, (newVal) => {
     <Label for="location-name" class="block my-4">search location</Label>
     <div class="relative">
       <Combobox v-model="locationText">
-        <ComboboxAnchor>
-          <div class="relative w-full max-w-sm items-center">
-            <ComboboxInput
-              class="pl-9"
-              placeholder="location..."
-              v-model="locationText"
-            />
-            <span
-              class="absolute start-0 inset-y-0 flex items-center justify-center px-3"
-            >
-              <Search class="size-4 text-muted-foreground" />
-            </span>
-          </div>
+        <ComboboxAnchor class="w-full border">
+          <ComboboxInput
+            id="location-input"
+            class="w-full"
+            placeholder="location..."
+            v-model="locationText"
+          />
         </ComboboxAnchor>
 
         <ComboboxList>
-          <ComboboxEmpty>No.</ComboboxEmpty>
+          <ComboboxEmpty v-if="false">No.</ComboboxEmpty>
 
           <ComboboxGroup>
             <ComboboxItem
