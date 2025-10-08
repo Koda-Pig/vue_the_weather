@@ -126,4 +126,9 @@ button:not(:disabled):hover {
   body {
     @apply bg-background text-foreground;
   }
+  html,
+  body,
+  #app {
+    height: 100%;
+  }
 }

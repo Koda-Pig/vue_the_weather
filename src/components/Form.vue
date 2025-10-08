@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import Button from './ui/button/Button.vue'
-import Label from './ui/label/Label.vue'
 import type { Coords, State, LocationPrediction } from '@/types'
 import { debounce } from '@/funks'
 import { cn } from '@/lib/utils'
@@ -22,23 +21,14 @@ const locationText = ref('')
 const state = defineModel<State>('state')
 const coords = defineModel<Coords | null>('coords')
 const locationPrediction = ref<LocationPrediction | null>(null)
+const noResultsFound = ref(false)
+const MIN_CHAR_INPUT = 3
 
 const options = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0,
 }
-
-// //  for there to be no results found there also needs to be a decent search term. It should probably have a min character limit too.
-// let noResultsFound = false
-
-// watch(locationPrediction, function () {
-//   // showEmptyPredictions =
-//   //   (locationPrediction.value?.features &&
-//   //     locationPrediction.value.features.length > 0) ??
-//   //   false
-//   console.log(locationPrediction.value)
-// })
 
 function success(pos: GeolocationPosition) {
   const crd = pos.coords
@@ -72,6 +62,11 @@ async function getLocationPrediction() {
     )
     const data = await response.json()
     locationPrediction.value = data
+
+    const noFeatures = locationPrediction.value?.features?.length === 0
+    const hasMinInput = locationText.value.trim().length > MIN_CHAR_INPUT
+
+    noResultsFound.value = noFeatures && hasMinInput
   } catch (error: unknown) {
     state.value = 'error'
     throw new Error(
@@ -89,6 +84,7 @@ const debouncedGetLocationPrediction = debounce(() => {
 watch(locationText, (newVal) => {
   const val = newVal.trim()
   if (val) debouncedGetLocationPrediction()
+  else noResultsFound.value = false
 })
 </script>
 
@@ -105,25 +101,27 @@ watch(locationText, (newVal) => {
     </Button>
 
     <p
-      class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto"
+      class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto max-w-1/2 mx-auto"
     >
       or
     </p>
 
-    <Label for="location-name" class="block my-4">search location</Label>
     <div class="relative">
       <Combobox v-model="locationText">
-        <ComboboxAnchor class="w-full border">
+        <ComboboxAnchor class="w-full text-center">
           <ComboboxInput
             id="location-input"
-            class="w-full"
-            placeholder="location..."
+            class="w-full text-center"
+            placeholder="search location"
             v-model="locationText"
           />
         </ComboboxAnchor>
 
         <ComboboxList>
-          <ComboboxEmpty v-if="false">No.</ComboboxEmpty>
+          <ComboboxEmpty v-if="noResultsFound"
+            >No results found. Type better.</ComboboxEmpty
+          >
+          <div v-if="!noResultsFound">loading</div>
 
           <ComboboxGroup>
             <ComboboxItem
@@ -156,9 +154,9 @@ watch(locationText, (newVal) => {
   background: linear-gradient(
     to right,
     transparent,
-    gray calc(50% - 1.5ch),
+    rgba(0, 0, 0, 0.1) calc(50% - 1.5ch),
     transparent 0 calc(50% + 1.5ch),
-    gray 0,
+    rgba(0, 0, 0, 0.1) 0,
     transparent
   );
 }

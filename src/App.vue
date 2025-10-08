@@ -53,7 +53,7 @@ function reset() {
 </script>
 
 <template>
-  <main class="p-4 md:p-8">
+  <main class="p-4 md:p-8 h-full">
     <Button class="absolute top-4 right-4" @click="reset"> reset </Button>
     <Card class="w-[60ch] mx-auto text-center relative">
       <h1 class="text-xl">Vue Weather</h1>
@@ -74,3 +74,25 @@ function reset() {
     </Card>
   </main>
 </template>
+
+<style scoped lang="css">
+main {
+  background-image:
+    radial-gradient(
+      ellipse at 70% 60%,
+      rgba(152, 144, 227, 0.45) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 25% 85%,
+      rgba(152, 144, 227, 0.5) 0%,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 55% 15%,
+      rgba(177, 244, 207, 0.4) 0%,
+      transparent 50%
+    ),
+    linear-gradient(135deg, #9890e3 0%, #b1f4cf 100%);
+}
+</style>
