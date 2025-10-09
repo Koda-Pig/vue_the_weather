@@ -111,7 +111,7 @@ watch(locationText, (newVal) => {
         <ComboboxAnchor class="w-full text-center">
           <ComboboxInput
             id="location-input"
-            class="w-full text-center"
+            class="w-full text-center border"
             placeholder="search location"
             v-model="locationText"
           />
