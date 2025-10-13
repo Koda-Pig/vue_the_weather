@@ -49,9 +49,9 @@ function reset() {
 </script>
 
 <template>
-  <main class="p-4 md:p-8 h-full">
-    <Button class="absolute top-4 right-4" @click="reset"> reset </Button>
-    <Card class="w-[60ch] mx-auto text-center relative">
+  <main class="p-4 md:p-8">
+    <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
+    <Card class="max-w-[min(100%,60ch)] mx-auto text-center relative">
       <h1 class="text-xl">Vue Weather</h1>
       <CardContent class="">
         <Form

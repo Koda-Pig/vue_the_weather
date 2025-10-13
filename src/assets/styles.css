@@ -128,7 +128,8 @@ button:not(:disabled):hover {
   }
   html,
   body,
-  #app {
+  #app,
+  main {
     height: 100%;
   }
 }
