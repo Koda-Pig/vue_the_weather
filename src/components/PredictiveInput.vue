@@ -44,9 +44,8 @@ async function getLocationPrediction() {
     locationPrediction.value = data
 
     const noFeatures = locationPrediction.value?.features?.length === 0
-    const hasMinInput = locationText.value.trim().length > MIN_CHAR_INPUT
 
-    noResultsFound.value = noFeatures && hasMinInput
+    noResultsFound.value = noFeatures
     predictionState.value = 'success'
   } catch (error: unknown) {
     globalState.value = 'error'
@@ -63,13 +62,23 @@ const debouncedGetLocationPrediction = debounce(getLocationPrediction, 1000)
 
 watch(locationText, (newVal) => {
   const val = newVal.trim()
-  if (val) {
+  if (val.length > MIN_CHAR_INPUT) {
     predictionState.value = 'loading'
+    noResultsFound.value = false
     debouncedGetLocationPrediction()
   } else {
     predictionState.value = null
     noResultsFound.value = false
+    locationPrediction.value = null
   }
+})
+
+watch(predictionState, (newState) => {
+  console.info('-------------------------')
+  console.log('state', newState)
+  console.log('noResults', noResultsFound.value)
+  console.log(locationPrediction.value)
+  console.info('-------------------------')
 })
 </script>
 
@@ -85,12 +94,18 @@ watch(locationText, (newVal) => {
         />
       </ComboboxAnchor>
 
-      <ComboboxList>
-        <ComboboxEmpty v-if="noResultsFound"
-          >No results found. Type better.</ComboboxEmpty
-        >
+      <ComboboxList v-if="predictionState !== null">
+        <ComboboxEmpty v-if="noResultsFound">
+          <p class="px-2">No results found. Type better.</p>
+        </ComboboxEmpty>
 
-        <Loader v-if="predictionState === 'loading'" />
+        <ComboboxEmpty v-if="predictionState === 'loading'">
+          <Loader />
+        </ComboboxEmpty>
+
+        <ComboboxEmpty v-if="predictionState === 'error'">
+          <p class="px-2">Error loading locations. Please try again.</p>
+        </ComboboxEmpty>
 
         <ComboboxGroup>
           <ComboboxItem

@@ -19,10 +19,6 @@ watch(coords, (newCoords) => {
   }
 })
 
-watch(state, (newState) => {
-  console.log('state', newState)
-})
-
 async function getCurrentWeather({ lat, lon }: Coords) {
   if (!openweatherKey) {
     state.value = 'error'
