@@ -93,15 +93,6 @@ watch(locationText, (newVal) => {
     locationPrediction.value = null
   }
 })
-
-watch(predictionState, (newState) => {
-  console.info('-------------------------')
-  console.log('state', newState)
-  console.log('noResults', noResultsFound.value)
-  console.log('locationPrediction', locationPrediction.value)
-  console.log('locationText', locationText.value)
-  console.info('-------------------------')
-})
 </script>
 
 <template>
