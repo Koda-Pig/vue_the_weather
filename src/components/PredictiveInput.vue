@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { Coords, FormState, LocationPrediction } from '@/types'
+import type { Coords, FormState, LocationPrediction, BaseState } from '@/types'
 import { debounce } from '@/funks'
 import { cn } from '@/lib/utils'
 import { Check } from 'lucide-vue-next'
@@ -14,6 +14,7 @@ import {
   ComboboxItemIndicator,
   ComboboxList,
 } from '@/components/ui/combobox'
+import Loader from './Loader.vue'
 
 const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const locationText = ref('')
@@ -21,6 +22,7 @@ const globalState = defineModel<FormState>('state')
 const coords = defineModel<Coords | null>('coords')
 const locationPrediction = ref<LocationPrediction | null>(null)
 const noResultsFound = ref(false)
+const predictionState = ref<BaseState | null>(null)
 const MIN_CHAR_INPUT = 3
 
 function handlePredictionClick(predictionCoords: Coords) {
@@ -45,8 +47,10 @@ async function getLocationPrediction() {
     const hasMinInput = locationText.value.trim().length > MIN_CHAR_INPUT
 
     noResultsFound.value = noFeatures && hasMinInput
+    predictionState.value = 'success'
   } catch (error: unknown) {
     globalState.value = 'error'
+    predictionState.value = 'error'
     throw new Error(
       typeof error === 'string'
         ? error
@@ -59,8 +63,13 @@ const debouncedGetLocationPrediction = debounce(getLocationPrediction, 1000)
 
 watch(locationText, (newVal) => {
   const val = newVal.trim()
-  if (val) debouncedGetLocationPrediction()
-  else noResultsFound.value = false
+  if (val) {
+    predictionState.value = 'loading'
+    debouncedGetLocationPrediction()
+  } else {
+    predictionState.value = null
+    noResultsFound.value = false
+  }
 })
 </script>
 
@@ -80,7 +89,8 @@ watch(locationText, (newVal) => {
         <ComboboxEmpty v-if="noResultsFound"
           >No results found. Type better.</ComboboxEmpty
         >
-        <div v-if="!noResultsFound">loading</div>
+
+        <Loader v-if="predictionState === 'loading'" />
 
         <ComboboxGroup>
           <ComboboxItem
