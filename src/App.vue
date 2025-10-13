@@ -60,7 +60,7 @@ function reset() {
           v-model:coords="coords"
         />
         <WeatherDisplay
-          v-else-if="state === 'success'"
+          v-else-if="state === 'success' && weatherData"
           v-model:weatherData="weatherData"
         />
         <p v-else-if="state === 'error'" class="text-red-500">
