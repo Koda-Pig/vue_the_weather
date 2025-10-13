@@ -72,14 +72,6 @@ watch(locationText, (newVal) => {
     locationPrediction.value = null
   }
 })
-
-watch(predictionState, (newState) => {
-  console.info('-------------------------')
-  console.log('state', newState)
-  console.log('noResults', noResultsFound.value)
-  console.log(locationPrediction.value)
-  console.info('-------------------------')
-})
 </script>
 
 <template>
@@ -95,19 +87,16 @@ watch(predictionState, (newState) => {
       </ComboboxAnchor>
 
       <ComboboxList v-if="predictionState !== null">
-        <ComboboxEmpty v-if="noResultsFound">
-          <p class="px-2">No results found. Type better.</p>
-        </ComboboxEmpty>
-
         <ComboboxEmpty v-if="predictionState === 'loading'">
           <Loader />
         </ComboboxEmpty>
-
-        <ComboboxEmpty v-if="predictionState === 'error'">
+        <ComboboxEmpty v-else-if="noResultsFound">
+          <p class="px-2">No results found. Type better.</p>
+        </ComboboxEmpty>
+        <ComboboxEmpty v-else-if="predictionState === 'error'">
           <p class="px-2">Error loading locations. Please try again.</p>
         </ComboboxEmpty>
-
-        <ComboboxGroup>
+        <ComboboxGroup v-else>
           <ComboboxItem
             v-for="guess in locationPrediction?.features"
             :key="`${guess.properties.lat}-${guess.properties.lon}`"
