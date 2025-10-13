@@ -10,5 +10,5 @@ Using these components: [shadcn-vue](https://shadcn-vue.com/)
 
 ## TODO
 
-- fix the loading state of the location prediction ('loading' text remains after the predictions are loaded)
 - Implememnt weather display
+- Add feature to remember user location.
