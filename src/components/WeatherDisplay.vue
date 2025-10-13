@@ -1,21 +1,9 @@
 <script setup lang="ts">
 import type { WeatherData } from '@/types'
+import { kelvinToCelsius, formatTime } from '@/funks'
 import { CardDescription, CardTitle } from '@/components/ui/card'
 
 const weatherData = defineModel<WeatherData>('weatherData')
-
-// Helper function to convert Kelvin to Celsius
-const kelvinToCelsius = (kelvin: number) => {
-  return Math.round(kelvin - 273.15)
-}
-
-// Helper function to format timestamp to time
-const formatTime = (timestamp: number) => {
-  return new Date(timestamp * 1000).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
 </script>
 
 <template>
