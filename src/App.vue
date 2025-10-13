@@ -5,12 +5,12 @@ import WeatherDisplay from './components/WeatherDisplay.vue'
 import Card from './components/ui/card/Card.vue'
 import CardContent from './components/ui/card/CardContent.vue'
 import Button from './components/ui/button/Button.vue'
-import type { Coords, WeatherData, State } from '@/types'
+import type { Coords, WeatherData, FormState } from '@/types'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const weatherData = ref<WeatherData | null>(null)
 
-const state = ref<State>('unsubmitted')
+const state = ref<FormState>('unsubmitted')
 const coords = ref<Coords | null>(null)
 
 watch(coords, (newCoords) => {

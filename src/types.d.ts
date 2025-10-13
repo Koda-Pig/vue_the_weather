@@ -3,7 +3,9 @@ export type Coords = {
   lon: number
 }
 
-export type State = 'unsubmitted' | 'loading' | 'success' | 'error'
+export type BaseState = 'loading' | 'success' | 'error'
+
+export type FormState = 'unsubmitted' | BaseState
 
 export type WeatherData = {
   coord: {

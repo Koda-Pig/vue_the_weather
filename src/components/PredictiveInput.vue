@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { Coords, State, LocationPrediction } from '@/types'
+import type { Coords, FormState, LocationPrediction } from '@/types'
 import { debounce } from '@/funks'
 import { cn } from '@/lib/utils'
 import { Check } from 'lucide-vue-next'
@@ -17,7 +17,7 @@ import {
 
 const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const locationText = ref('')
-const state = defineModel<State>('state')
+const globalState = defineModel<FormState>('state')
 const coords = defineModel<Coords | null>('coords')
 const locationPrediction = ref<LocationPrediction | null>(null)
 const noResultsFound = ref(false)
@@ -29,7 +29,7 @@ function handlePredictionClick(predictionCoords: Coords) {
 
 async function getLocationPrediction() {
   if (!geoApifyKey) {
-    state.value = 'error'
+    globalState.value = 'error'
     throw new Error('GeoApify key is not set')
   }
 
@@ -46,18 +46,16 @@ async function getLocationPrediction() {
 
     noResultsFound.value = noFeatures && hasMinInput
   } catch (error: unknown) {
-    state.value = 'error'
+    globalState.value = 'error'
     throw new Error(
       typeof error === 'string'
         ? error
-        : `An unknown error occurred: ${JSON.stringify(error)}`,
+        : `An unknown error occurred while fetching location predictions: ${JSON.stringify(error)}`,
     )
   }
 }
 
-const debouncedGetLocationPrediction = debounce(() => {
-  getLocationPrediction()
-}, 1000)
+const debouncedGetLocationPrediction = debounce(getLocationPrediction, 1000)
 
 watch(locationText, (newVal) => {
   const val = newVal.trim()

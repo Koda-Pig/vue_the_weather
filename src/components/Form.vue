@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Button from './ui/button/Button.vue'
-import type { Coords, State } from '@/types'
+import type { Coords, FormState } from '@/types'
 import PredictiveInput from './PredictiveInput.vue'
 
-const state = defineModel<State>('state')
+const state = defineModel<FormState>('state')
 const coords = defineModel<Coords | null>('coords')
 
 const options = {
