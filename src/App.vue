@@ -51,7 +51,7 @@ function reset() {
 <template>
   <main class="p-4 md:p-8">
     <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
-    <Card class="max-w-[min(100%,60ch)] mx-auto text-center relative">
+    <Card class="max-w-[min(100%,60ch)] mx-auto text-center relative main-card">
       <h1 class="text-xl">Vue Weather</h1>
       <CardContent class="">
         <Form
@@ -72,23 +72,36 @@ function reset() {
 </template>
 
 <style scoped lang="css">
+@property --bg-size {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 10px;
+}
+
 main {
   background-image:
-    radial-gradient(
-      ellipse at 70% 60%,
-      rgba(152, 144, 227, 0.45) 0%,
-      transparent 55%
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0,
+      #e5e5f7 var(--bg-size)
     ),
-    radial-gradient(
-      circle at 25% 85%,
-      rgba(152, 144, 227, 0.5) 0%,
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 55% 15%,
-      rgba(177, 244, 207, 0.4) 0%,
-      transparent 50%
-    ),
-    linear-gradient(135deg, #9890e3 0%, #b1f4cf 100%);
+    repeating-linear-gradient(#27374d55, #9db2bf);
+  animation: moveBackground 10s ease infinite;
+}
+
+.main-card {
+  background: rgb(255 255 255 / 50%);
+  backdrop-filter: blur(2px);
+}
+
+@keyframes moveBackground {
+  0%,
+  100% {
+    --bg-size: 10px;
+  }
+
+  50% {
+    --bg-size: 10.5px;
+  }
 }
 </style>

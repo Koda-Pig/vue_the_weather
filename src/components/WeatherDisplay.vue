@@ -2,8 +2,39 @@
 import type { WeatherData } from '@/types'
 import { kelvinToCelsius, formatTime } from '@/funks'
 import { CardDescription, CardTitle } from '@/components/ui/card'
+import { computed } from 'vue'
 
 const weatherData = defineModel<WeatherData>('weatherData')
+
+// OpenWeatherMap icon codes to our custom SVG mapping
+// OWM uses codes like: 01d (clear day), 01n (clear night), 02d (few clouds day), etc.
+const iconMap: Record<string, string> = {
+  '01d': '/icons/clear-day.svg',
+  '01n': '/icons/clear-night.svg',
+  '02d': '/icons/scattered-clouds.svg',
+  '02n': '/icons/scattered-clouds.svg',
+  '03d': '/icons/scattered-clouds.svg',
+  '03n': '/icons/scattered-clouds.svg',
+  '04d': '/icons/broken-clouds.svg',
+  '04n': '/icons/broken-clouds.svg',
+  '09d': '/icons/shower-rain.svg',
+  '09n': '/icons/shower-rain.svg',
+  '10d': '/icons/rain-day.svg',
+  '10n': '/icons/rain-night.svg',
+  '11d': '/icons/thunderstorms-day.svg',
+  '11n': '/icons/thunderstorms-night.svg',
+  '13d': '/icons/snow-day.svg',
+  '13n': '/icons/snow-night.svg',
+  '50d': '/icons/mist-day.svg',
+  '50n': '/icons/mist-night.svg',
+}
+
+const weatherIcon = computed(() => {
+  if (!weatherData.value) return ''
+
+  const iconCode = weatherData.value.weather[0].icon
+  return iconMap[iconCode] || '/icons/clear-day.svg'
+})
 </script>
 
 <template>
@@ -11,9 +42,20 @@ const weatherData = defineModel<WeatherData>('weatherData')
     <CardTitle class="text-3xl">
       {{ weatherData.name }}, {{ weatherData.sys.country }}
     </CardTitle>
-    <CardDescription class="text-lg capitalize">
-      {{ weatherData.weather[0].description }}
-    </CardDescription>
+
+    <!-- Weather Icon and Description -->
+    <div class="flex flex-col items-center py-4">
+      <img
+        v-if="weatherIcon"
+        :src="weatherIcon"
+        :alt="weatherData.weather[0].description"
+        class="w-32 h-32 mb-4"
+      />
+      <CardDescription class="text-lg capitalize">
+        {{ weatherData.weather[0].description }}
+      </CardDescription>
+    </div>
+
     <!-- Main Temperature Display -->
     <div class="text-center py-4">
       <div class="text-6xl font-bold">
