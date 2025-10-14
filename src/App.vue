@@ -51,7 +51,7 @@ function reset() {
 <template>
   <main class="p-4 md:p-8">
     <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
-    <Card class="max-w-[min(100%,60ch)] mx-auto text-center relative main-card">
+    <Card class="w-[min(100%,60ch)] mx-auto text-center relative main-card">
       <h1 class="text-xl">Vue Weather</h1>
       <CardContent class="">
         <Form
@@ -79,6 +79,9 @@ function reset() {
 }
 
 main {
+  background-color: black;
+  display: grid;
+  place-items: center;
   background-image:
     repeating-radial-gradient(
       circle at center,
