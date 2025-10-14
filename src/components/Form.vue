@@ -56,9 +56,9 @@ function getDeviceLocation() {
   background: linear-gradient(
     to right,
     transparent,
-    rgba(0, 0, 0, 0.1) calc(50% - 1.5ch),
+    rgba(0, 0, 0, 0.3) calc(50% - 1.5ch),
     transparent 0 calc(50% + 1.5ch),
-    rgba(0, 0, 0, 0.1) 0,
+    rgba(0, 0, 0, 0.3) 0,
     transparent
   );
 }
