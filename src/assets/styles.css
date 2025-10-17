@@ -125,11 +125,20 @@ button:not(:disabled):hover {
   }
   body {
     @apply bg-background text-foreground;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: url('/images/jelly-1920.webp');
   }
-  html,
-  body,
-  #app,
-  main {
-    height: 100%;
+  @media (min-width: 1920px) {
+    body {
+      background-image: url('/images/jelly-2560.webp');
+    }
+  }
+  @media (min-width: 2560px) {
+    body {
+      background-image: url('/images/jelly-3840.webp');
+    }
   }
 }

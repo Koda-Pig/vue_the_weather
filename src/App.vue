@@ -71,40 +71,17 @@ function reset() {
   </main>
 </template>
 
-<style scoped lang="css">
-@property --bg-size {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 10px;
-}
-
+<style scoped lang="scss">
 main {
-  background-color: black;
   display: grid;
   place-items: center;
-  background-image:
-    repeating-radial-gradient(
-      circle at center,
-      transparent 0,
-      #e5e5f7 var(--bg-size)
-    ),
-    repeating-linear-gradient(#27374d55, #9db2bf);
-  animation: moveBackground 10s ease infinite;
+  backdrop-filter: blur(3px);
+  min-height: 100vh; // fallback
+  min-height: 100dvh;
 }
 
 .main-card {
   background: rgb(255 255 255 / 50%);
   backdrop-filter: blur(2px);
-}
-
-@keyframes moveBackground {
-  0%,
-  100% {
-    --bg-size: 10px;
-  }
-
-  50% {
-    --bg-size: 10.5px;
-  }
 }
 </style>
