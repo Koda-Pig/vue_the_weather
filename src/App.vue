@@ -51,7 +51,7 @@ function reset() {
 <template>
   <main class="p-4 md:p-8">
     <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
-    <Card class="w-[min(100%,60ch)] mx-auto text-center relative main-card">
+    <Card class="w-[min(100%,60ch)] mx-auto text-center relative">
       <h1 class="text-xl">Vue Weather</h1>
       <CardContent class="">
         <Form
@@ -78,10 +78,5 @@ main {
   backdrop-filter: blur(3px);
   min-height: 100vh; // fallback
   min-height: 100dvh;
-}
-
-.main-card {
-  background: rgb(255 255 255 / 50%);
-  backdrop-filter: blur(2px);
 }
 </style>
