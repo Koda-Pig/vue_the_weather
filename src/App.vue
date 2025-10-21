@@ -75,7 +75,7 @@ function reset() {
 main {
   display: grid;
   place-items: center;
-  backdrop-filter: blur(3px);
+  // backdrop-filter: blur(3px);
   min-height: 100vh; // fallback
   min-height: 100dvh;
 }
