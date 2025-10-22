@@ -98,10 +98,10 @@ watch(locationText, (newVal) => {
 <template>
   <div class="relative">
     <Combobox v-model="locationText" :ignore-filter="true">
-      <ComboboxAnchor class="w-full text-center">
+      <ComboboxAnchor class="mx-auto">
         <ComboboxInput
           id="location-input"
-          class="w-full text-center border bg-foreground/90 text-background"
+          class="w-full text-center border border-foreground placeholder:text-foreground placeholder:text-base"
           placeholder="search location"
           v-model="locationText"
         />

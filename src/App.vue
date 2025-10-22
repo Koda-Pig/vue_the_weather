@@ -2,9 +2,6 @@
 import { ref, watch } from 'vue'
 import Form from './components/Form.vue'
 import WeatherDisplay from './components/WeatherDisplay.vue'
-import Card from './components/ui/card/Card.vue'
-import CardContent from './components/ui/card/CardContent.vue'
-import Button from './components/ui/button/Button.vue'
 import type { Coords, WeatherData, FormState } from '@/types'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
@@ -45,29 +42,38 @@ async function getCurrentWeather({ lat, lon }: Coords) {
 function reset() {
   state.value = 'unsubmitted'
   coords.value = null
+  weatherData.value = null
 }
 </script>
 
 <template>
   <main class="p-4 md:p-8">
-    <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
-    <Card class="w-[min(100%,60ch)] mx-auto text-center relative">
-      <h1 class="text-xl">Vue Weather</h1>
-      <CardContent class="">
-        <Form
-          v-if="state === 'unsubmitted' || state === 'loading'"
-          v-model:state="state"
-          v-model:coords="coords"
-        />
-        <WeatherDisplay
-          v-else-if="state === 'success' && weatherData"
-          v-model:weatherData="weatherData"
-        />
-        <p v-else-if="state === 'error'" class="text-red-500">
-          An error occurred
-        </p>
-      </CardContent>
-    </Card>
+    <button
+      class="fixed top-2 right-2 z-10 border border-foreground rounded-md px-3 py-1"
+      @click="reset"
+    >
+      reset
+    </button>
+    <div
+      class="w-[min(100%,40ch)] mx-auto text-center relative bg-background px-4 py-6 rounded-2xl"
+    >
+      <h1 v-if="state !== 'success' && !weatherData" class="text-2xl mb-4">
+        Vue Weather
+      </h1>
+
+      <Form
+        v-if="state === 'unsubmitted' || state === 'loading'"
+        v-model:state="state"
+        v-model:coords="coords"
+      />
+      <WeatherDisplay
+        v-else-if="state === 'success' && weatherData"
+        v-model:weatherData="weatherData"
+      />
+      <p v-else-if="state === 'error'" class="text-red-500">
+        An error occurred
+      </p>
+    </div>
   </main>
 </template>
 

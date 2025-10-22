@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Button from './ui/button/Button.vue'
 import type { Coords, FormState } from '@/types'
 import PredictiveInput from './PredictiveInput.vue'
 
@@ -30,15 +29,14 @@ function getDeviceLocation() {
 
 <template>
   <form @submit.prevent>
-    <Button
+    <button
       type="button"
-      size="lg"
-      class="block mx-auto"
+      class="block mx-auto border border-foreground rounded-md px-3 py-2"
       @click="getDeviceLocation"
     >
       <span v-if="state === 'loading'"> loading...</span>
       <span v-else>get device location</span>
-    </Button>
+    </button>
 
     <p
       class="before-and my-4 after:content-[''] after:h-0.5 after:w-full after:absolute relative after:inset-0 after:m-auto max-w-1/2 mx-auto"
@@ -56,9 +54,9 @@ function getDeviceLocation() {
   background: linear-gradient(
     to right,
     transparent,
-    rgba(0, 0, 0, 0.3) calc(50% - 1.5ch),
+    var(--foreground) calc(50% - 1.5ch),
     transparent 0 calc(50% + 1.5ch),
-    rgba(0, 0, 0, 0.3) 0,
+    var(--foreground) 0,
     transparent
   );
 }
