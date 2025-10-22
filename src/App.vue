@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { cn } from './lib/utils'
 import Form from './components/Form.vue'
 import WeatherDisplay from './components/WeatherDisplay.vue'
 import type { Coords, WeatherData, FormState } from '@/types'
@@ -55,7 +56,12 @@ function reset() {
       reset
     </button>
     <div
-      class="w-[min(100%,40ch)] mx-auto text-center relative bg-background px-4 py-6 rounded-2xl"
+      :class="
+        cn(
+          'w-[min(100%,40ch)] mx-auto text-center relative  px-4 py-6 rounded-2xl',
+          state === 'success' && weatherData ? 'fancy-bg' : 'bg-background',
+        )
+      "
     >
       <h1 v-if="state !== 'success' && !weatherData" class="text-2xl mb-4">
         Vue Weather
@@ -81,8 +87,11 @@ function reset() {
 main {
   display: grid;
   place-items: center;
-  // backdrop-filter: blur(3px);
-  min-height: 100vh; // fallback
   min-height: 100dvh;
+}
+
+.fancy-bg {
+  background: radial-gradient(circle, #40666aaa, #40666aaa);
+  backdrop-filter: blur(4px);
 }
 </style>

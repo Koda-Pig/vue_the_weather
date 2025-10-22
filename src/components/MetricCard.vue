@@ -8,7 +8,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="p-3 border rounded-lg">
+  <div class="p-3 border border-foreground rounded-lg">
     <div class="text-sm text-white">{{ title }}</div>
     <div class="text-xl font-semibold">
       {{ value }}<span v-if="unit" class="ml-0.5">{{ unit }}</span>

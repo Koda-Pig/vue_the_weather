@@ -94,27 +94,18 @@ const weatherIcon = computed(() => {
         :value="weatherData.wind.speed"
         unit="m/s"
       />
-
-      <div class="p-3 border rounded-lg">
-        <div class="text-sm text-white">Pressure</div>
-        <div class="text-xl font-semibold">
-          {{ weatherData.main.pressure }} hPa
-        </div>
-      </div>
-      <div class="p-3 border rounded-lg">
-        <div class="text-sm text-white">Visibility</div>
-        <div class="text-xl font-semibold">
-          {{ (weatherData.visibility / 1000).toFixed(1) }} km
-        </div>
-      </div>
-      <div class="p-3 border rounded-lg">
-        <div class="text-sm text-white">Clouds</div>
-        <div class="text-xl font-semibold">{{ weatherData.clouds.all }}%</div>
-      </div>
-      <div class="p-3 border rounded-lg">
-        <div class="text-sm text-white">Wind Gust</div>
-        <div class="text-xl font-semibold">{{ weatherData.wind.gust }} m/s</div>
-      </div>
+      <MetricCard
+        title="Pressure"
+        :value="weatherData.main.pressure"
+        unit="hPa"
+      />
+      <MetricCard
+        title="Visibility"
+        :value="(weatherData.visibility / 1000).toFixed(1)"
+        unit="km"
+      />
+      <MetricCard title="Clouds" :value="weatherData.clouds.all" unit="%" />
+      <MetricCard title="Wind Gust" :value="weatherData.wind.gust" unit="m/s" />
     </div>
 
     <!-- Sun Times -->
