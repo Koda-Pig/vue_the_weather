@@ -66,7 +66,7 @@ function reset() {
       :class="
         cn(
           'w-[min(100%,40ch)] mx-auto text-center relative  px-4 py-6 rounded-2xl',
-          state === 'success' && weatherData ? 'fancy-bg' : 'bg-background',
+          state === 'success' && weatherData ? 'fancier-bg' : 'fancy-bg',
         )
       "
     >
@@ -98,7 +98,12 @@ main {
 }
 
 .fancy-bg {
-  background: radial-gradient(circle, #40666aaa, #40666aaa);
+  background: #40666acc;
+  backdrop-filter: blur(4px);
+}
+
+.fancier-bg {
+  background: #40666aaa;
   backdrop-filter: blur(4px);
 }
 </style>

@@ -25,7 +25,3 @@ pnpm run dev
 ## Deployment
 
 Deployed using Netlify [here](https://weather-vueing.netlify.app/)
-
-## TODO
-
-- Add feature to remember user location.
