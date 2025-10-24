@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { Coords, FormState, LocationPrediction, BaseState } from '@/types'
-import { debounce } from '@/funks'
-import { cn } from '@/lib/utils'
+import { cn, debounce } from '@/lib/utils'
 import { Check } from 'lucide-vue-next'
 import {
   Combobox,

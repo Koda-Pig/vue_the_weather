@@ -6,6 +6,7 @@ import WeatherDisplay from './components/WeatherDisplay.vue'
 import type { Coords, WeatherData, FormState } from '@/types'
 import { useLocationStorage } from '@/composables/useLocationStorage'
 import Button from './components/ui/button/Button.vue'
+import { setBodyClass } from './lib/utils'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const weatherData = ref<WeatherData | null>(null)
@@ -13,6 +14,8 @@ const weatherData = ref<WeatherData | null>(null)
 const state = ref<FormState>('unsubmitted')
 const coords = ref<Coords | null>(null)
 const { saveLastLocation } = useLocationStorage()
+
+setBodyClass()
 
 watch(coords, (newCoords) => {
   if (newCoords) {

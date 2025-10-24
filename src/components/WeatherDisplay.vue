@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WeatherData } from '@/types'
-import { kelvinToCelsius, formatTime } from '@/funks'
+import { kelvinToCelsius, formatTime } from '@/lib/utils'
 import MetricCard from './MetricCard.vue'
 import { computed } from 'vue'
 
