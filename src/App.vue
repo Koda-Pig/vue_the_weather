@@ -60,7 +60,9 @@ function reset() {
 
 <template>
   <main class="p-4 md:p-8">
-    <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
+    <Button class="fixed top-2 right-2 z-10 bg-background/50" @click="reset"
+      >reset</Button
+    >
     <div
       :class="
         cn(
