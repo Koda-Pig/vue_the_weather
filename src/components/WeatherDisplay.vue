@@ -6,7 +6,7 @@ import { computed } from 'vue'
 
 const weatherData = defineModel<WeatherData>('weatherData')
 
-// OpenWeatherMap icon codes to our custom SVG mapping
+// OpenWeatherMap icon codes to custom SVG mapping
 // OWM uses codes like: 01d (clear day), 01n (clear night), 02d (few clouds day), etc.
 const iconMap: Record<string, string> = {
   '01d': '/icons/clear-day.svg',
