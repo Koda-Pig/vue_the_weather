@@ -212,39 +212,5 @@ button:not(:disabled):hover {
   body {
     @apply bg-background text-foreground;
     font-family: 'Poppins';
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    /* Lots of media queries to set the right image for each screen size and pixel density */
-    background-image: image-set(
-      url('/images/dark-1024.webp') 1x,
-      url('/images/dark-2048.webp') 2x
-    );
-  }
-  @media (min-width: 1920px) {
-    body {
-      background-image: image-set(
-        url('/images/dark-1920.webp') 1x,
-        url('/images/dark-3840.webp') 2x
-      );
-    }
-  }
-  @media (min-width: 2048px) {
-    body {
-      background-image: image-set(
-        url('/images/dark-2048.webp') 1x,
-        url('/images/dark-3840.webp') 2x
-      );
-    }
-  }
-  @media (min-width: 3840px) {
-    body {
-      background-image: url('/images/dark-3840.webp');
-    }
-  }
-
-  body.day-time {
-    background-image: url('/images/light-3840.webp');
   }
 }

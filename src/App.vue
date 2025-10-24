@@ -109,3 +109,61 @@ main {
   }
 }
 </style>
+
+<style lang="scss">
+body {
+  background: url('') center / cover no-repeat fixed var(--background);
+
+  $themes: (
+    'dark': '',
+    'light': '.day-time',
+  );
+
+  // breakpoints and resolutions
+  $sizes: (
+    'base': (
+      '1x': '1024',
+      '2x': '2048',
+    ),
+    '1024': (
+      '1x': '1920',
+      '2x': '3840',
+    ),
+    '1920': (
+      '1x': '2048',
+      '2x': '3840',
+    ),
+    '2048': (
+      'url': '3840',
+    ),
+  );
+
+  // Sets the background image for the body based on the theme (day/ night), resolution, and pixel density
+  @each $theme-name, $selector-suffix in $themes {
+    &#{$selector-suffix} {
+      @each $breakpoint, $resolutions in $sizes {
+        @if $breakpoint == 'base' {
+          background-image: image-set(
+            url('/images/#{$theme-name}-#{map-get($resolutions, "1x")}.webp')
+              1x,
+            url('/images/#{$theme-name}-#{map-get($resolutions, "2x")}.webp') 2x
+          );
+        } @else {
+          @media (min-width: calc(#{$breakpoint} * 1px)) {
+            @if map-has-key($resolutions, 'url') {
+              background-image: url('/images/#{$theme-name}-#{map-get($resolutions, "url")}.webp');
+            } @else {
+              background-image: image-set(
+                url('/images/#{$theme-name}-#{map-get($resolutions, "1x")}.webp')
+                  1x,
+                url('/images/#{$theme-name}-#{map-get($resolutions, "2x")}.webp')
+                  2x
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>
