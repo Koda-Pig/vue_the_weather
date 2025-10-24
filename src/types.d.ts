@@ -114,3 +114,8 @@ export type LocationPrediction = {
     parsed: { city: string; expected_type: string }
   }
 }
+
+export type StoredLocation = {
+  coords: Coords
+  timestamp: number
+}

@@ -25,6 +25,7 @@ const locationPrediction = ref<LocationPrediction | null>(null)
 const noResultsFound = ref(false)
 const predictionState = ref<BaseState | null>(null)
 const MIN_CHAR_INPUT = 3 // 3 characters are minimum input for predictive location to function
+const DEBOUNCE_PERIOD = 300 // ms
 
 function handlePredictionClick(predictionCoords: Coords) {
   const { lat, lon } = predictionCoords
@@ -80,7 +81,10 @@ async function getLocationPrediction() {
   }
 }
 
-const debouncedGetLocationPrediction = debounce(getLocationPrediction, 1000)
+const debouncedGetLocationPrediction = debounce(
+  getLocationPrediction,
+  DEBOUNCE_PERIOD,
+)
 
 watch(locationText, (newVal) => {
   const val = newVal.trim()
@@ -98,16 +102,16 @@ watch(locationText, (newVal) => {
 <template>
   <div class="relative">
     <Combobox v-model="locationText" :ignore-filter="true">
-      <ComboboxAnchor class="mx-auto">
+      <ComboboxAnchor class="mx-auto w-full">
         <ComboboxInput
           id="location-input"
-          class="w-full text-center border border-foreground placeholder:text-foreground placeholder:text-base"
+          class="text-center border border-foreground placeholder:text-foreground placeholder:text-base"
           placeholder="search location"
           v-model="locationText"
         />
       </ComboboxAnchor>
 
-      <ComboboxList v-if="predictionState !== null">
+      <ComboboxList v-if="predictionState !== null" class="bg-background">
         <ComboboxEmpty v-if="predictionState === 'loading'">
           <Loader />
         </ComboboxEmpty>

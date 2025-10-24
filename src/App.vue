@@ -4,16 +4,19 @@ import { cn } from './lib/utils'
 import Form from './components/Form.vue'
 import WeatherDisplay from './components/WeatherDisplay.vue'
 import type { Coords, WeatherData, FormState } from '@/types'
+import { useLocationStorage } from '@/composables/useLocationStorage'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const weatherData = ref<WeatherData | null>(null)
 
 const state = ref<FormState>('unsubmitted')
 const coords = ref<Coords | null>(null)
+const { saveLastLocation } = useLocationStorage()
 
 watch(coords, (newCoords) => {
   if (newCoords) {
     getCurrentWeather(newCoords)
+    ;(document.activeElement as HTMLElement)?.blur()
   }
 })
 
@@ -26,10 +29,14 @@ async function getCurrentWeather({ lat, lon }: Coords) {
   try {
     const response = await fetch(url)
     const data = await response.json()
-    if (data) {
-      weatherData.value = data
-      state.value = 'success'
-    }
+    if (!data) return
+
+    weatherData.value = data
+    state.value = 'success'
+
+    if (!coords.value) return
+
+    saveLastLocation(coords.value)
   } catch (error: unknown) {
     state.value = 'error'
     throw new Error(
