@@ -60,11 +60,11 @@ function reset() {
 
 <template>
   <main class="p-4 md:p-8">
-    <Button class="fixed top-2 right-2 z-10" @click="reset"> reset </Button>
+    <Button class="fixed top-2 right-2 z-10" @click="reset">reset</Button>
     <div
       :class="
         cn(
-          'main-card w-[min(100%,40ch)] mx-auto text-center relative  px-4 py-6 rounded-2xl',
+          'main-card w-[min(100%,42ch)] mx-auto text-center relative  px-4 py-6 rounded-2xl',
           state === 'success' && weatherData && 'successful',
         )
       "
@@ -122,19 +122,19 @@ body {
   // breakpoints and resolutions
   $sizes: (
     'base': (
-      '1x': '1024',
-      '2x': '2048',
+      '1x': '1024x576',
+      '2x': '2048x1152',
     ),
     '1024': (
-      '1x': '1920',
-      '2x': '3840',
+      '1x': '1920x1080',
+      '2x': '3840x2160',
     ),
     '1920': (
-      '1x': '2048',
-      '2x': '3840',
+      '1x': '2048x1152',
+      '2x': '3840x2160',
     ),
     '2048': (
-      'url': '3840',
+      'url': '3840x2160',
     ),
   );
 
