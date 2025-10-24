@@ -13,7 +13,7 @@ const props = defineProps<Props>()
     :class="
       cn(
         props.class,
-        'inline-block border border-foreground rounded-md px-3 py-2 w-full sm:w-auto',
+        'inline-block border border-foreground rounded-md px-3 py-2 w-full sm:w-auto hover:bg-background transition-colors duration-300',
       )
     "
   >

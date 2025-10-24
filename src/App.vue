@@ -61,8 +61,8 @@ function reset() {
     <div
       :class="
         cn(
-          'w-[min(100%,40ch)] mx-auto text-center relative  px-4 py-6 rounded-2xl',
-          state === 'success' && weatherData ? 'fancier-bg' : 'fancy-bg',
+          'main-card w-[min(100%,40ch)] mx-auto text-center relative  px-4 py-6 rounded-2xl',
+          state === 'success' && weatherData && 'successful',
         )
       "
     >
@@ -93,13 +93,16 @@ main {
   min-height: 100dvh;
 }
 
-.fancy-bg {
-  background: #40666acc;
+.main-card {
+  transition-property: background-color, backdrop-filter;
+  transition-timing-function: ease-out;
+  transition-duration: 0.3s;
+  background-color: #40666acc;
   backdrop-filter: blur(4px);
-}
 
-.fancier-bg {
-  background: #40666aaa;
-  backdrop-filter: blur(4px);
+  &.successful {
+    background-color: #40666aaa;
+    backdrop-filter: blur(3px);
+  }
 }
 </style>

@@ -53,16 +53,15 @@ function handleUseLastLocationClick() {
         )
       "
     >
+      <Button class="w-full sm:w-auto" @click="getDeviceLocation">
+        <span>get device location</span>
+      </Button>
       <Button
         v-if="hasLastLocation"
         class="w-full sm:w-auto"
         @click="handleUseLastLocationClick"
       >
         use last location
-      </Button>
-
-      <Button class="w-full sm:w-auto" @click="getDeviceLocation">
-        <span>get device location</span>
       </Button>
       <Loader
         v-if="state === 'loading'"
