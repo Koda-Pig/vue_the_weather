@@ -3,6 +3,8 @@ import type { Coords, FormState } from '@/types'
 import PredictiveInput from './PredictiveInput.vue'
 import { useLocationStorage } from '@/composables/useLocationStorage'
 import { cn } from '@/lib/utils'
+import Button from './ui/button/Button.vue'
+import Loader from './Loader.vue'
 
 const state = defineModel<FormState>('state')
 const coords = defineModel<Coords | null>('coords')
@@ -33,28 +35,39 @@ function useLastLocation() {
   const lastCoords = getLastLocation()
   if (lastCoords) coords.value = lastCoords
 }
+
+function handleUseLastLocationClick() {
+  useLastLocation()
+  state.value = 'loading'
+}
 </script>
 
 <template>
   <form @submit.prevent>
-    <div :class="cn(hasLastLocation && 'sm:grid-cols-2 gap-2', 'grid mb-4')">
-      <button
+    <div
+      :class="
+        cn(
+          'grid mb-4 relative',
+          hasLastLocation && 'sm:grid-cols-2 gap-2',
+          state === 'loading' && 'is-loading',
+        )
+      "
+    >
+      <Button
         v-if="hasLastLocation"
-        type="button"
-        class="block border border-foreground rounded-md px-3 py-2 w-full sm:w-auto"
-        @click="useLastLocation"
+        class="w-full sm:w-auto"
+        @click="handleUseLastLocationClick"
       >
         use last location
-      </button>
+      </Button>
 
-      <button
-        type="button"
-        class="block border border-foreground rounded-md px-3 py-2 w-full sm:w-auto"
-        @click="getDeviceLocation"
-      >
-        <span v-if="state === 'loading'"> loading...</span>
-        <span v-else>get device location</span>
-      </button>
+      <Button class="w-full sm:w-auto" @click="getDeviceLocation">
+        <span>get device location</span>
+      </Button>
+      <Loader
+        v-if="state === 'loading'"
+        class="absolute inset-0 opacity-0 loader"
+      />
     </div>
 
     <p
@@ -67,7 +80,7 @@ function useLastLocation() {
   </form>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 /* this creates a line behind the 'or' text and the calcs with the 'ch' (1 character) unit account for the width of the text */
 .before-and:after {
   background: linear-gradient(
@@ -78,5 +91,15 @@ function useLastLocation() {
     var(--foreground) 0,
     transparent
   );
+}
+
+.is-loading {
+  button {
+    opacity: 0;
+  }
+
+  span {
+    opacity: 1;
+  }
 }
 </style>

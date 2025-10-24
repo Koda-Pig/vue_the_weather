@@ -5,6 +5,7 @@ import Form from './components/Form.vue'
 import WeatherDisplay from './components/WeatherDisplay.vue'
 import type { Coords, WeatherData, FormState } from '@/types'
 import { useLocationStorage } from '@/composables/useLocationStorage'
+import Button from './components/ui/button/Button.vue'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const weatherData = ref<WeatherData | null>(null)
@@ -56,12 +57,7 @@ function reset() {
 
 <template>
   <main class="p-4 md:p-8">
-    <button
-      class="fixed top-2 right-2 z-10 border border-foreground rounded-md px-3 py-1"
-      @click="reset"
-    >
-      reset
-    </button>
+    <Button class="fixed top-2 right-2 z-10" @click="reset"> reset </Button>
     <div
       :class="
         cn(

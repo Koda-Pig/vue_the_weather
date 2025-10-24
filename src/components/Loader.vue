@@ -1,15 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { cn } from '@/lib/utils'
+
+type Props = {
+  class?: HTMLSpanElement['className']
+}
+
+const props = defineProps<Props>()
+</script>
 
 <template>
-  <span class="loader"></span>
+  <span
+    :class="cn('m-auto loader relative w-12 h-12 inline-block', props.class)"
+  />
 </template>
 
 <style scoped lang="scss">
 .loader {
-  width: 48px;
-  height: 48px;
-  display: inline-block;
-  position: relative;
   &::after,
   &::before {
     content: '';
@@ -17,7 +23,7 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 2px solid #000;
+    border: 2px solid var(--foreground);
     position: absolute;
     left: 0;
     top: 0;
