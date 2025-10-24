@@ -111,6 +111,8 @@ main {
 </style>
 
 <style lang="scss">
+@use 'sass:map';
+
 body {
   background: url('') center / cover no-repeat fixed var(--background);
 
@@ -144,19 +146,19 @@ body {
       @each $breakpoint, $resolutions in $sizes {
         @if $breakpoint == 'base' {
           background-image: image-set(
-            url('/images/#{$theme-name}-#{map-get($resolutions, "1x")}.webp')
+            url('/images/#{$theme-name}-#{map.get($resolutions, "1x")}.webp')
               1x,
-            url('/images/#{$theme-name}-#{map-get($resolutions, "2x")}.webp') 2x
+            url('/images/#{$theme-name}-#{map.get($resolutions, "2x")}.webp') 2x
           );
         } @else {
           @media (min-width: calc(#{$breakpoint} * 1px)) {
-            @if map-has-key($resolutions, 'url') {
-              background-image: url('/images/#{$theme-name}-#{map-get($resolutions, "url")}.webp');
+            @if map.has-key($resolutions, 'url') {
+              background-image: url('/images/#{$theme-name}-#{map.get($resolutions, "url")}.webp');
             } @else {
               background-image: image-set(
-                url('/images/#{$theme-name}-#{map-get($resolutions, "1x")}.webp')
+                url('/images/#{$theme-name}-#{map.get($resolutions, "1x")}.webp')
                   1x,
-                url('/images/#{$theme-name}-#{map-get($resolutions, "2x")}.webp')
+                url('/images/#{$theme-name}-#{map.get($resolutions, "2x")}.webp')
                   2x
               );
             }
