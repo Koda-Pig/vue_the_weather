@@ -59,8 +59,10 @@ function reset() {
 </script>
 
 <template>
-  <main class="p-4 md:p-8">
-    <Button class="fixed top-2 right-2 z-10 bg-background/50" @click="reset"
+  <main class="p-4 md:p-8 space-y-4">
+    <Button
+      class="ml-auto align-self-start z-10 bg-background/50 !w-min"
+      @click="reset"
       >reset</Button
     >
     <div
