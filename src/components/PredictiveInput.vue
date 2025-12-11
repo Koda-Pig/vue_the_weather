@@ -13,12 +13,14 @@ import {
   ComboboxItemIndicator,
   ComboboxList,
 } from '@/components/ui/combobox'
+import { toast } from 'vue-sonner'
 import Loader from './Loader.vue'
 
 const geoApifyKey = import.meta.env.VITE_APP_GEOAPIFY_KEY
 const locationText = ref('')
 const globalState = defineModel<FormState>('state')
 const coords = defineModel<Coords | null>('coords')
+const errorMessage = defineModel<string | null>('errorMessage')
 const abortController = ref<AbortController | null>(null)
 const locationPrediction = ref<LocationPrediction | null>(null)
 const noResultsFound = ref(false)
@@ -33,8 +35,12 @@ function handlePredictionClick(predictionCoords: Coords) {
 
 async function getLocationPrediction() {
   if (!geoApifyKey) {
+    const error = 'GeoApify key is not set'
     globalState.value = 'error'
-    throw new Error('GeoApify key is not set')
+    errorMessage.value = error
+    toast.error(error)
+    console.error(error)
+    return
   }
 
   // Cancel previous request
@@ -70,13 +76,15 @@ async function getLocationPrediction() {
       console.log('abort fetch of new predictions')
       return // Ignore aborted requests
     }
-    globalState.value = 'error'
-    predictionState.value = 'error'
-    throw new Error(
+    const message =
       typeof error === 'string'
         ? error
-        : `An unknown error occurred while fetching location predictions: ${JSON.stringify(error)}`,
-    )
+        : `An unknown error occurred while fetching location predictions: ${JSON.stringify(error)}`
+    globalState.value = 'error'
+    predictionState.value = 'error'
+    errorMessage.value = message
+    console.error(message)
+    toast.error(message)
   }
 }
 

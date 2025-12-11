@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { Coords, FormState } from '@/types'
+import { cn } from '@/lib/utils'
+import { toast } from 'vue-sonner'
 import PredictiveInput from './PredictiveInput.vue'
 import { useLocationStorage } from '@/composables/useLocationStorage'
-import { cn } from '@/lib/utils'
 import Button from './ui/button/Button.vue'
 import Loader from './Loader.vue'
 
 const state = defineModel<FormState>('state')
 const coords = defineModel<Coords | null>('coords')
+const errorMessage = defineModel<string | null>('errorMessage')
 const { hasLastLocation, getLastLocation } = useLocationStorage()
 
 const options = {
@@ -22,7 +24,26 @@ function success(pos: GeolocationPosition) {
 }
 
 function error(err: GeolocationPositionError) {
-  console.warn(`ERROR(${err.code}): ${err.message}`)
+  console.error(`ERROR(${err.code}): ${err.message}`)
+  let displayedMsg: string
+
+  switch (err.code) {
+    case err.PERMISSION_DENIED:
+      displayedMsg =
+        'Location access denied. Please enable location permissions in your browser settings.'
+      break
+    case err.POSITION_UNAVAILABLE:
+      displayedMsg =
+        'Location information unavailable. Please check your device settings.'
+      break
+    case err.TIMEOUT:
+      displayedMsg = 'Location request timed out. Please try again.'
+      break
+    default:
+      displayedMsg = `Unable to get location: ${err.message}`
+  }
+  errorMessage.value = displayedMsg
+  toast.error(displayedMsg)
   state.value = 'error'
 }
 
@@ -75,7 +96,11 @@ function handleUseLastLocationClick() {
       or
     </p>
 
-    <PredictiveInput v-model:state="state" v-model:coords="coords" />
+    <PredictiveInput
+      v-model:state="state"
+      v-model:coords="coords"
+      v-model:error-message="errorMessage"
+    />
   </form>
 </template>
 

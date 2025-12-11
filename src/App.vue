@@ -7,11 +7,15 @@ import type { Coords, WeatherData, FormState } from '@/types'
 import { useLocationStorage } from '@/composables/useLocationStorage'
 import Button from './components/ui/button/Button.vue'
 import { setBodyClass } from './lib/utils'
+import { Toaster } from './components/ui/sonner'
+import { toast } from 'vue-sonner'
+import 'vue-sonner/style.css'
 
 const openweatherKey = import.meta.env.VITE_APP_OPENWEATHER_KEY
 const weatherData = ref<WeatherData | null>(null)
 
 const state = ref<FormState>('unsubmitted')
+const errorMessage = ref<string | null>(null)
 const coords = ref<Coords | null>(null)
 const { saveLastLocation } = useLocationStorage()
 
@@ -27,7 +31,10 @@ watch(coords, (newCoords) => {
 async function getCurrentWeather({ lat, lon }: Coords) {
   if (!openweatherKey) {
     state.value = 'error'
-    throw new Error('Openweather key is not set')
+    const message = 'Openweather key is not set'
+    errorMessage.value = message
+    toast.error(message)
+    console.error(message)
   }
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${openweatherKey}`
   try {
@@ -43,11 +50,13 @@ async function getCurrentWeather({ lat, lon }: Coords) {
     saveLastLocation(coords.value)
   } catch (error: unknown) {
     state.value = 'error'
-    throw new Error(
+    const message =
       typeof error === 'string'
         ? error
-        : `An unknown error occurred: ${JSON.stringify(error)}`,
-    )
+        : `An unknown error occurred: ${JSON.stringify(error)}`
+    toast.error(message)
+    errorMessage.value = message
+    console.error(message)
   }
 }
 
@@ -81,21 +90,27 @@ function reset() {
         v-if="state === 'unsubmitted' || state === 'loading'"
         v-model:state="state"
         v-model:coords="coords"
+        v-model:error-message="errorMessage"
       />
       <WeatherDisplay
         v-else-if="state === 'success' && weatherData"
         v-model:weatherData="weatherData"
       />
-      <p v-else-if="state === 'error'" class="text-red-500">
-        An error occurred
+      <p v-else-if="state === 'error'" class="text-red-100">
+        {{ errorMessage }}
+        <Button class="bg-background/50 !block mx-auto mt-4" @click="reset"
+          >reset</Button
+        >
       </p>
     </div>
   </main>
+  <Toaster />
 </template>
 
 <style scoped lang="scss">
 main {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   place-items: center;
   min-height: 100dvh;
 }
